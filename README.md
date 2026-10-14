@@ -82,10 +82,3 @@ What these show:
   (the cross-check agrees). Work out why before you quote it: one cold block can trigger a chain of hot-line misses.
 
 These are synthetic traces, so they illustrate behaviour; they are not a benchmark of real programs.
-
-## Ideas to extend
-
-- Add an L2 level; report global vs local miss rate.
-- Classify misses as compulsory / capacity / conflict (3C model).
-- Add real traces (e.g., from Valgrind's `lackey` tool) and a random or pseudo-LRU policy.
-- Count a final flush of dirty lines so write-back traffic is complete.
