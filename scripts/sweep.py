@@ -11,10 +11,10 @@ import subprocess
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 SIM = os.path.join(ROOT, "cachesim")
 TRACES = ["sequential", "stride", "random", "hotset", "matrix_row", "matrix_col", "conflict"]
-SIZES = [8 * 1024, 32 * 1024]
-BLOCKS = [16, 32, 64, 128]
+SIZES = [32 * 1024]
+BLOCKS = [64]
 ASSOCS = [1, 2, 4, 8]
-REPLS = ["lru", "fifo"]
+REPLS = ["lru"]
 FIELDS = ["accesses", "hits", "misses", "miss_rate", "amat",
           "evictions", "writebacks", "mem_reads", "mem_writes"]
 
