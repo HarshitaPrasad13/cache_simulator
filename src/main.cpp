@@ -9,6 +9,10 @@
 
 typedef unsigned long long ull;
 
+// Convert a number to text. We print these with %s instead of %llu because
+// the old Windows C library (MinGW) does not understand %llu.
+static std::string num(ull v) { return std::to_string(v); }
+
 static void print_usage(const char* prog) {
     std::fprintf(stderr,
         "Usage: %s --trace FILE [options]\n"
@@ -25,11 +29,11 @@ static void print_usage(const char* prog) {
 
 static void print_csv(const Cache& cache) {
     const CacheStats& s = cache.stats();
-    std::printf("%llu,%llu,%llu,%.6f,%.4f,%llu,%llu,%llu,%llu\n",
-                (ull)s.accesses(), (ull)s.hits(), (ull)s.misses(),
+    std::printf("%s,%s,%s,%.6f,%.4f,%s,%s,%s,%s\n",
+                num(s.accesses()).c_str(), num(s.hits()).c_str(), num(s.misses()).c_str(),
                 s.miss_rate(), cache.amat(),
-                (ull)s.evictions, (ull)s.writebacks,
-                (ull)s.mem_reads, (ull)s.mem_writes);
+                num(s.evictions).c_str(), num(s.writebacks).c_str(),
+                num(s.mem_reads).c_str(), num(s.mem_writes).c_str());
 }
 
 static void print_report(const Cache& cache) {
@@ -41,18 +45,18 @@ static void print_report(const Cache& cache) {
                             ? "write-back/write-allocate"
                             : "write-through/no-write-allocate";
 
-    std::printf("Config: %llu B, %u B blocks, %u-way, %llu sets, %s, %s\n",
-                (ull)cfg.cache_size, cfg.block_size, cfg.assoc,
-                (ull)cache.num_sets(), repl, write);
-    std::printf("Accesses : %llu (reads %llu, writes %llu)\n",
-                (ull)s.accesses(), (ull)s.reads, (ull)s.writes);
-    std::printf("Hits     : %llu\nMisses   : %llu\n", (ull)s.hits(), (ull)s.misses());
+    std::printf("Config: %s B, %u B blocks, %u-way, %s sets, %s, %s\n",
+                num(cfg.cache_size).c_str(), (unsigned)cfg.block_size, (unsigned)cfg.assoc,
+                num(cache.num_sets()).c_str(), repl, write);
+    std::printf("Accesses : %s (reads %s, writes %s)\n",
+                num(s.accesses()).c_str(), num(s.reads).c_str(), num(s.writes).c_str());
+    std::printf("Hits     : %s\nMisses   : %s\n", num(s.hits()).c_str(), num(s.misses()).c_str());
     std::printf("Miss rate: %.4f%%\n", 100.0 * s.miss_rate());
     std::printf("AMAT     : %.3f cycles (hit %.1f + miss rate * penalty %.1f)\n",
                 cache.amat(), cfg.hit_time, cfg.miss_penalty);
-    std::printf("Evictions: %llu, writebacks: %llu\n", (ull)s.evictions, (ull)s.writebacks);
-    std::printf("Memory   : %llu block reads, %llu write ops\n",
-                (ull)s.mem_reads, (ull)s.mem_writes);
+    std::printf("Evictions: %s, writebacks: %s\n", num(s.evictions).c_str(), num(s.writebacks).c_str());
+    std::printf("Memory   : %s block reads, %s write ops\n",
+                num(s.mem_reads).c_str(), num(s.mem_writes).c_str());
 }
 
 int main(int argc, char** argv) {
