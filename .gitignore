@@ -1,0 +1,6 @@
+# build outputs (don't commit binaries; anyone can rebuild with `make`)
+cachesim
+cachesim.exe
+test_cache
+test_cache.exe
+ 
